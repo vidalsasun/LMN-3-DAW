@@ -1,0 +1,28 @@
+{
+  "ActiveTargetSystem": "WSL: Ubuntu-22.04",
+  "DevContainersInfoBarHidden": true,
+  "OutputFoldersPerTargetSystem": {
+    "M\u00E1quina local": [
+      "out\\build\\x64-Debug",
+      "out\\install\\x64-Debug"
+    ],
+    "WSL: Ubuntu-22.04": [
+      "out\\build\\x64-Debug",
+      "out\\install\\x64-Debug"
+    ]
+  },
+  "ExpandedNodes": [
+    "",
+    "\\Source",
+    "\\Source\\Modules",
+    "\\Source\\Modules\\app_services",
+    "\\Source\\Modules\\app_view_models",
+    "\\Source\\Modules\\app_view_models\\Edit",
+    "\\Source\\Modules\\app_view_models\\Edit\\Settings",
+    "\\Source\\Views",
+    "\\Source\\Views\\Edit",
+    "\\Source\\Views\\Edit\\Settings"
+  ],
+  "SelectedNode": "\\Source\\Views\\Edit\\Settings\\LoadSaveSongListView.cpp",
+  "PreviewInSolutionExplorer": false
+}

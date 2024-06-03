@@ -451,3 +451,32 @@ void TracksView::undoButtonReleased() {
         if (midiCommandManager.getFocusedComponent() == this)
             viewModel.undo();
 }
+
+// CJM
+void TracksView::noteOnPressed(int noteNumber) {
+    juce::Logger::writeToLog("noteOnPressed  noteNumber" +
+                             std::to_string(noteNumber));
+    if (midiCommandManager.isPlusDown) {
+        juce::Logger::writeToLog("Ha entrado en el mute");
+        switch (noteNumber) {
+        case 53:
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(1);
+            informationPanel.setIsMuted(viewModel.getSelectedTrackMuteState());
+            break;
+        case 54:
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(2);
+            informationPanel.setIsMuted(viewModel.getSelectedTrackMuteState());
+            break;
+        case 55:
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(3);
+            informationPanel.setIsMuted(viewModel.getSelectedTrackMuteState());
+            break;
+        case 56:
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(4);
+            informationPanel.setIsMuted(viewModel.getSelectedTrackMuteState());
+            break;
+        default:
+            break;
+        }
+    }
+}

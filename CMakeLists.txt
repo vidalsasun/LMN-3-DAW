@@ -37,6 +37,7 @@ target_sources(LMN-3  PRIVATE
     Source/Views/LookAndFeel/ListItems/ListItemColour2LookAndFeel.cpp
     Source/Views/Edit/Settings/SettingsListView.cpp
     Source/Views/Edit/Settings/DeviceTypeListView.cpp
+    Source/Views/Edit/Settings/LoadSaveSongListView.cpp
     Source/Views/Edit/Settings/OutputListView.cpp
     Source/Views/Edit/Settings/SampleRateListView.cpp
     Source/Views/Edit/Settings/MidiInputListView.cpp
@@ -90,7 +91,7 @@ target_sources(LMN-3  PRIVATE
     Source/Views/Edit/Mixer/MixerView.cpp
     Source/Views/Edit/Mixer/MixerTableListBoxModel.cpp
     Source/Views/Edit/Mixer/MixerTrackView.cpp
-    Source/Views/Edit/Mixer/LevelMeterComponent.cpp
+    Source/Views/Edit/Mixer/LevelMeterComponent.cpp    
 )
 
 target_include_directories(LMN-3  PUBLIC
@@ -191,7 +192,7 @@ target_link_libraries(LMN-3
         FontData
     #    SynthSampleData
     #    DrumSampleData
-        atomic
+    #    atomic
         yaml-cpp
     PUBLIC
         juce::juce_recommended_config_flags
