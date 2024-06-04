@@ -13,18 +13,20 @@ class LoadSaveSongListViewModel : private ItemListState::Listener {
 
     juce::StringArray getItemNames();
     juce::String getSelectedItem();
-    void updateDeviceManagerDeviceType();
+    //void updateDeviceManagerDeviceType();
+    //void loadSongList();
 
   private:
     juce::AudioDeviceManager &deviceManager;
     juce::ValueTree state;
 
     void selectedIndexChanged(int newIndex) override;
-
+    void loadSongList(const juce::File &directory);
   public:
     // Must appear below the other variables since it needs to be initialized
     // last
-    juce::StringArray deviceTypes;
+    //juce::StringArray deviceTypes;
+    juce::StringArray songNames;
     ItemListState itemListState;
 };
 
