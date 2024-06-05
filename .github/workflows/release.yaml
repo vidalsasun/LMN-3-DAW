@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-20.04
-    container: stonepreston/juce-x86_64-compiler:latest
+    container: FundamentalFrequency/juce-x86_64-compiler:latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
 
   build_x86_64:
     runs-on: ubuntu-20.04
-    container: stonepreston/juce-x86_64-compiler:latest
+    container: FundamentalFrequency/juce-x86_64-compiler:latest
 
     needs: test
 
@@ -50,7 +50,7 @@ jobs:
 
   build_arm:
     runs-on: ubuntu-20.04
-    container: stonepreston/juce-arm-linux-cross-compiler:latest
+    container: FundamentalFrequency/juce-arm-linux-cross-compiler:latest
 
     needs: test
 
@@ -76,7 +76,7 @@ jobs:
 
   build_aarch64:
     runs-on: ubuntu-20.04
-    container: stonepreston/juce-aarch64-linux-cross-compiler:latest
+    container: FundamentalFrequency/juce-aarch64-linux-cross-compiler:latest
 
     needs: test
 
