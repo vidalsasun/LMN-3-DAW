@@ -17,12 +17,12 @@
     "\\Source\\Modules",
     "\\Source\\Modules\\app_view_models",
     "\\Source\\Modules\\app_view_models\\Edit",
-    "\\Source\\Modules\\app_view_models\\Edit\\ItemList",
+    "\\Source\\Modules\\app_view_models\\Edit\\Settings",
     "\\Source\\Views",
     "\\Source\\Views\\Edit",
     "\\Source\\Views\\Edit\\Settings",
     "\\Source\\Views\\SimpleList"
   ],
-  "SelectedNode": "\\Source\\Modules\\app_view_models\\Edit\\Settings\\LoadSaveSongListViewModel.cpp",
+  "SelectedNode": "\\Source\\Views\\Edit\\Settings\\LoadSaveSongListView.cpp",
   "PreviewInSolutionExplorer": false
 }
