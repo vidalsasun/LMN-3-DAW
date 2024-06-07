@@ -8,8 +8,13 @@ LoadSaveSongListViewModel::LoadSaveSongListViewModel(
                              IDs::LOAD_SAVE_SONG_VIEW_STATE, nullptr)),
       itemListState(state, songNames.size()) {
     // Inicializar la lista de canciones
-    juce::File songDirectory(juce::File::getCurrentWorkingDirectory().getChildFile("saved"));
-    loadSongList(songDirectory);
+    auto userAppDataDirectory = juce::File::getSpecialLocation(
+        juce::File::userApplicationDataDirectory);
+    juce::File savedDirectory =
+        userAppDataDirectory.getChildFile(applicationName)
+            .getChildFile("saved");
+    
+    loadSongList(savedDirectory);
     itemListState.addListener(this);
 }
 
@@ -32,6 +37,8 @@ void LoadSaveSongListViewModel::selectedIndexChanged(int newIndex) {
 
 void LoadSaveSongListViewModel::loadSongList(const juce::File &directory) {
     songNames.clear();
+    songNames.add("Add +");   
+
     juce::Array<juce::File> songFiles =
         directory.findChildFiles(juce::File::findFiles, false, "*.xml");
 
@@ -44,6 +51,47 @@ void LoadSaveSongListViewModel::loadSongList(const juce::File &directory) {
         0); // Opcional: Resetear al primer ítem o cualquier otra lógica que
             // necesites
     itemListState.addListener(this);
+}
+void LoadSaveSongListViewModel::updateLoadSaveSong(
+    const juce::File &directory) {
+    
+    //TODO es aqui donde se tiene que cargar el track
+    //loadEditState()
+    /* auto setup = deviceManager.getAudioDeviceSetup();
+    setup.outputDeviceName = getSelectedItem();
+    auto result = deviceManager.setAudioDeviceSetup(setup, true);
+    if (result != "") {
+        juce::Logger::writeToLog("Error setting output device to " +
+                                 getSelectedItem() + ": " + result);
+    }*/
+}
+void saveEditState(const tracktion::engine::Edit &edit,
+                   const juce::File &file) {
+    // Serializar el estado del Edit a XML
+    auto xml = edit.state.createXml();
+
+    // Guardar el XML en un archivo
+    if (xml) {
+        if (!xml->writeTo(file)) {
+            // Manejar el error si la escritura al archivo falla
+            DBG("Failed to write Edit state to file.");
+        }
+    } else {
+        // Manejar el error si la serialización falla
+        DBG("Failed to create XML from Edit state.");
+    }
+}
+void loadEditState(tracktion::engine::Edit &edit, const juce::File &file) {
+    // Leer el XML desde el archivo
+    auto xml = juce::XmlDocument::parse(file);
+
+    if (xml) {
+        // Deserializar el XML para restaurar el estado del Edit
+        edit.state = juce::ValueTree::fromXml(*xml);
+    } else {
+        // Manejar el error si la lectura del archivo falla
+        DBG("Failed to read Edit state from file.");
+    }
 }
 
 } // namespace app_view_models

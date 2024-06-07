@@ -47,12 +47,57 @@ class GuiAppApplication : public juce::JUCEApplication {
 
         auto userAppDataDirectory = juce::File::getSpecialLocation(
             juce::File::userApplicationDataDirectory);
-        juce::File editFile =
+        juce::File savedDirectory =
             userAppDataDirectory.getChildFile(getApplicationName())
-                .getChildFile("edit");
-        if (editFile.existsAsFile()) {
-            edit = tracktion::loadEditFromFile(engine, editFile);
+                .getChildFile("saved");
+
+        if (!savedDirectory.exists()) {
+            savedDirectory.createDirectory();
+        }
+
+        juce::File latestFile;
+        juce::Time latestModificationTime;
+
+        if (savedDirectory.isDirectory()) {
+            juce::Array<juce::File> files = savedDirectory.findChildFiles(
+                juce::File::findFiles, false, "*.xml");
+
+            for (const auto &currentFile : files) {
+                if (currentFile.getLastModificationTime() >
+                    latestModificationTime) {
+                    latestModificationTime =
+                        currentFile.getLastModificationTime();
+                    latestFile = currentFile;
+                }
+            }
+        }
+
+        if (latestFile.existsAsFile()) {
+            edit = tracktion::loadEditFromFile(engine, latestFile);
         } else {
+            // Generar nombre de archivo basado en la fecha actual
+            auto currentTime = juce::Time::getCurrentTime();
+            auto day =
+                juce::String(currentTime.getDayOfMonth()).paddedLeft('0', 2);
+            auto month = juce::String(currentTime.getMonth() + 1)
+                             .paddedLeft('0', 2); // Meses son 0-based
+            auto year = juce::String(currentTime.getYear());
+            auto hours =
+                juce::String(currentTime.getHours()).paddedLeft('0', 2);
+            auto minutes =
+                juce::String(currentTime.getMinutes()).paddedLeft('0', 2);
+            auto seconds =
+                juce::String(currentTime.getSeconds()).paddedLeft('0', 2);
+
+
+
+            juce::String newEditFileName = "edit_" + day + month + year +
+                                           hours + minutes + seconds + ".xml";
+
+
+            auto editFile = savedDirectory.getChildFile(newEditFileName);
+
+            // Crear el archivo y la edición
             editFile.create();
             edit = tracktion::createEmptyEdit(engine, editFile);
             edit->ensureNumberOfAudioTracks(8);
@@ -60,7 +105,6 @@ class GuiAppApplication : public juce::JUCEApplication {
             for (auto track : tracktion::getAudioTracks(*edit))
                 track->setColour(appLookAndFeel.getRandomColour());
         }
-
         ConfigurationHelpers::initSamples(engine);
 
         // The master track does not have the default  plugins added to it by
@@ -92,6 +136,7 @@ class GuiAppApplication : public juce::JUCEApplication {
         initialiseAudioDevices();
         mainWindow = std::make_unique<MainWindow>(getApplicationName(), engine,
                                                   *edit, *midiCommandManager);
+
         splash->deleteAfterDelay(juce::RelativeTime::seconds(4.25), false);
     }
 

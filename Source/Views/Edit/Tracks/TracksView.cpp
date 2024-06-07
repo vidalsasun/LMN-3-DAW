@@ -458,25 +458,34 @@ void TracksView::noteOnPressed(int noteNumber) {
                              std::to_string(noteNumber));
     if (midiCommandManager.isPlusDown) {
         juce::Logger::writeToLog("Ha entrado en el mute");
+
+        int trackIndex = -1;
+
         switch (noteNumber) {
         case 53:
-            viewModel.listViewModel.itemListState.setSelectedItemIndex(1);
-            informationPanel.setIsMuted(viewModel.getSelectedTrackMuteState());
+            trackIndex = 1;
             break;
         case 54:
-            viewModel.listViewModel.itemListState.setSelectedItemIndex(2);
-            informationPanel.setIsMuted(viewModel.getSelectedTrackMuteState());
+            trackIndex = 2;
             break;
         case 55:
-            viewModel.listViewModel.itemListState.setSelectedItemIndex(3);
-            informationPanel.setIsMuted(viewModel.getSelectedTrackMuteState());
+            trackIndex = 3;
             break;
         case 56:
-            viewModel.listViewModel.itemListState.setSelectedItemIndex(4);
-            informationPanel.setIsMuted(viewModel.getSelectedTrackMuteState());
+            trackIndex = 4;
             break;
         default:
             break;
         }
+        if (trackIndex != -1) {
+            // Verifica si el índice es válido
+            if (trackIndex < viewModel.listViewModel.itemListState.listSize) {
+                viewModel.listViewModel.itemListState.setSelectedItemIndex(
+                    trackIndex);
+                informationPanel.setIsMuted(
+                    viewModel.getSelectedTrackMuteState());
+            }
+        }
     }
+
 }

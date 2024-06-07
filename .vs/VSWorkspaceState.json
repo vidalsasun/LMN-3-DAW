@@ -13,16 +13,9 @@
   },
   "ExpandedNodes": [
     "",
-    "\\Source",
-    "\\Source\\Modules",
-    "\\Source\\Modules\\app_view_models",
-    "\\Source\\Modules\\app_view_models\\Edit",
-    "\\Source\\Modules\\app_view_models\\Edit\\Settings",
-    "\\Source\\Views",
-    "\\Source\\Views\\Edit",
-    "\\Source\\Views\\Edit\\Settings",
-    "\\Source\\Views\\SimpleList"
+    "\\.github",
+    "\\.github\\workflows"
   ],
-  "SelectedNode": "\\Source\\Views\\Edit\\Settings\\LoadSaveSongListView.cpp",
+  "SelectedNode": "\\CMakeLists.txt",
   "PreviewInSolutionExplorer": false
 }

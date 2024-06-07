@@ -116,7 +116,7 @@ void EditTabBarView::tempoSettingsButtonReleased() {
     }
 }
 
-void EditTabBarView::saveButtonReleased() {
+/* void EditTabBarView::saveButtonReleased() {
     if (isShowing()) {
         juce::Logger::writeToLog("Saving edit ...");
         tracktion::EditFileOperations fileOperations(edit);
@@ -129,6 +129,30 @@ void EditTabBarView::saveButtonReleased() {
         messageBox.setVisible(true);
         startTimer(1000);
     }
+}*/
+
+
+void EditTabBarView::saveButtonReleased() {
+
+    auto userAppDataDirectory = juce::File::getSpecialLocation(
+        juce::File::userApplicationDataDirectory);
+    juce::File savedDirectory =
+        userAppDataDirectory.getChildFile(JUCE_APPLICATION_NAME_STRING)
+            .getChildFile("saved");
+
+    auto currentTime = juce::Time::getCurrentTime();
+    auto day = juce::String(currentTime.getDayOfMonth()).paddedLeft('0', 2);
+    auto month = juce::String(currentTime.getMonth() + 1)
+                     .paddedLeft('0', 2); // Meses son 0-based
+    auto year = juce::String(currentTime.getYear());
+    auto hours = juce::String(currentTime.getHours()).paddedLeft('0', 2);
+    auto minutes = juce::String(currentTime.getMinutes()).paddedLeft('0', 2);
+    auto seconds = juce::String(currentTime.getSeconds()).paddedLeft('0', 2);
+
+    juce::String newEditFileName =
+        "edit_" + day + month + year + hours + minutes + seconds + ".xml";
+    auto editFile = savedDirectory.getChildFile(newEditFileName);
+    editFile.create();
 }
 
 void EditTabBarView::renderButtonReleased() {

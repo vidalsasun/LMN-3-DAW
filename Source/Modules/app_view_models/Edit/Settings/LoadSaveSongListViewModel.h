@@ -19,9 +19,11 @@ class LoadSaveSongListViewModel : private ItemListState::Listener {
   private:
     juce::AudioDeviceManager &deviceManager;
     juce::ValueTree state;
+    juce::String applicationName = JUCE_APPLICATION_NAME_STRING;
 
     void selectedIndexChanged(int newIndex) override;
     void loadSongList(const juce::File &directory);
+    void updateLoadSaveSong(const juce::File &directory);
   public:
     // Must appear below the other variables since it needs to be initialized
     // last
