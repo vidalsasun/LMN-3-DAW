@@ -3,15 +3,16 @@
 namespace app_view_models {
 
 LoadSaveSongListViewModel::LoadSaveSongListViewModel(
-    tracktion::Edit &e, juce::AudioDeviceManager &dm)
+    tracktion::Edit &e, juce::AudioDeviceManager &dm,
+    const juce::String &appName)
     : deviceManager(dm), state(e.state.getOrCreateChildWithName(
                              IDs::LOAD_SAVE_SONG_VIEW_STATE, nullptr)),
       itemListState(state, songNames.size()) {
-    // Inicializar la lista de canciones
+
     auto userAppDataDirectory = juce::File::getSpecialLocation(
         juce::File::userApplicationDataDirectory);
     juce::File savedDirectory =
-        userAppDataDirectory.getChildFile(applicationName)
+        userAppDataDirectory.getChildFile(appName)
             .getChildFile("saved");
     
     loadSongList(savedDirectory);
@@ -51,19 +52,6 @@ void LoadSaveSongListViewModel::loadSongList(const juce::File &directory) {
         0); // Opcional: Resetear al primer ítem o cualquier otra lógica que
             // necesites
     itemListState.addListener(this);
-}
-void LoadSaveSongListViewModel::updateLoadSaveSong(
-    const juce::File &directory) {
-    
-    //TODO es aqui donde se tiene que cargar el track
-    //loadEditState()
-    /* auto setup = deviceManager.getAudioDeviceSetup();
-    setup.outputDeviceName = getSelectedItem();
-    auto result = deviceManager.setAudioDeviceSetup(setup, true);
-    if (result != "") {
-        juce::Logger::writeToLog("Error setting output device to " +
-                                 getSelectedItem() + ": " + result);
-    }*/
 }
 void saveEditState(const tracktion::engine::Edit &edit,
                    const juce::File &file) {

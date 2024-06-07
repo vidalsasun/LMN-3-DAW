@@ -4,7 +4,8 @@
 LoadSaveSongListView::LoadSaveSongListView(
     tracktion::Edit &e, juce::AudioDeviceManager &dm,
     app_services::MidiCommandManager &mcm)
-    : deviceManager(dm), midiCommandManager(mcm), viewModel(e, deviceManager),
+    : deviceManager(dm), midiCommandManager(mcm),
+      viewModel(e, deviceManager, "LMN-3"),
       titledList(viewModel.getItemNames(), "Song list",
                  ListTitle::IconType::FONT_AWESOME,
                  juce::String::charToString(0xf7d9)) {

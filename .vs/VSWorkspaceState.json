@@ -1,5 +1,4 @@
 {
-  "ActiveTargetSystem": "WSL: Ubuntu-22.04",
   "DevContainersInfoBarHidden": true,
   "OutputFoldersPerTargetSystem": {
     "M\u00E1quina local": [
@@ -13,9 +12,18 @@
   },
   "ExpandedNodes": [
     "",
-    "\\.github",
-    "\\.github\\workflows"
+    "\\Source",
+    "\\Source\\Modules",
+    "\\Source\\Modules\\app_view_models",
+    "\\Source\\Modules\\app_view_models\\Edit",
+    "\\Source\\Modules\\app_view_models\\Edit\\Settings",
+    "\\Source\\Views",
+    "\\Source\\Views\\App",
+    "\\Source\\Views\\Edit",
+    "\\Source\\Views\\Edit\\Settings",
+    "\\Source\\Views\\LookAndFeel"
   ],
   "SelectedNode": "\\CMakeLists.txt",
-  "PreviewInSolutionExplorer": false
+  "PreviewInSolutionExplorer": false,
+  "ActiveTargetSystem": "M\u00E1quina local"
 }

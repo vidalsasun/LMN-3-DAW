@@ -132,7 +132,7 @@ void EditTabBarView::tempoSettingsButtonReleased() {
 }*/
 
 
-void EditTabBarView::saveButtonReleased() {
+void EditTabBarView::saveButtonReleased() {       
 
     auto userAppDataDirectory = juce::File::getSpecialLocation(
         juce::File::userApplicationDataDirectory);
@@ -152,7 +152,9 @@ void EditTabBarView::saveButtonReleased() {
     juce::String newEditFileName =
         "edit_" + day + month + year + hours + minutes + seconds + ".xml";
     auto editFile = savedDirectory.getChildFile(newEditFileName);
-    editFile.create();
+    //editFile.create();
+    tracktion::EditFileOperations fileOperations(edit);
+    fileOperations.saveAs(editFile, true);
 }
 
 void EditTabBarView::renderButtonReleased() {
