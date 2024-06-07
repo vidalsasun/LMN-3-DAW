@@ -4,6 +4,7 @@ namespace app_view_models {
 namespace IDs {
 const juce::Identifier
     LOAD_SAVE_SONG_VIEW_STATE("LOAD_SAVE_SONG_VIEW_STATE");
+    JUCE_APPLICATION_NAME_STRING("JUCE_APPLICATION_NAME_STRING");
 }
 
 class LoadSaveSongListViewModel : private ItemListState::Listener {
