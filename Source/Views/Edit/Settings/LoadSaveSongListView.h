@@ -5,6 +5,7 @@
 #include <app_view_models/app_view_models.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
+#include <MessageBox.h>
 
 class LoadSaveSongListView : public juce::Component,
                          public app_view_models::ItemListState::Listener,
@@ -23,10 +24,11 @@ class LoadSaveSongListView : public juce::Component,
     void selectedIndexChanged(int newIndex) override;
 
   private:
+    tracktion::Edit &edit;
     juce::AudioDeviceManager &deviceManager;
     app_services::MidiCommandManager &midiCommandManager;
     app_view_models::LoadSaveSongListViewModel viewModel;
     TitledListView titledList;
-
+    MessageBox messageBox;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LoadSaveSongListView)
 };

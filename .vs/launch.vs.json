@@ -1,0 +1,12 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "LMN-3.exe (LMN-3_artefacts\\Debug\\LMN-3.exe)",
+      "name": "LMN-3.exe (LMN-3_artefacts\\Debug\\LMN-3.exe)"
+    }
+  ]
+}

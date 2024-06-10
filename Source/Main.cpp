@@ -4,8 +4,6 @@
 #include <internal_plugins/internal_plugins.h>
 #include <memory>
 #include <tracktion_engine/tracktion_engine.h>
-//#include <SynthSampleData.h>
-//#include <DrumSampleData.h>
 #include "App.h"
 #include "ExtendedUIBehaviour.h"
 
@@ -74,6 +72,7 @@ class GuiAppApplication : public juce::JUCEApplication {
 
         if (latestFile.existsAsFile()) {
             edit = tracktion::loadEditFromFile(engine, latestFile);
+            ConfigurationHelpers::setSavedTrackName(latestFile);
         } else {
             // Generar nombre de archivo basado en la fecha actual
             auto currentTime = juce::Time::getCurrentTime();
@@ -97,6 +96,7 @@ class GuiAppApplication : public juce::JUCEApplication {
 
             auto editFile = savedDirectory.getChildFile(newEditFileName);
 
+            ConfigurationHelpers::setSavedTrackName(editFile);
             // Crear el archivo y la edición
             editFile.create();
             edit = tracktion::createEmptyEdit(engine, editFile);
