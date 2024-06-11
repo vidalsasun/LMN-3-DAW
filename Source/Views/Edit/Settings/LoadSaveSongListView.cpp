@@ -1,13 +1,13 @@
 #include "LoadSaveSongListView.h"
+#include <ExtendedUIBehaviour.h>
 #include <app_navigation/app_navigation.h>
 #include <tracktion_engine/tracktion_engine.h>
-#include <ExtendedUIBehaviour.h>
 
 LoadSaveSongListView::LoadSaveSongListView(
     tracktion::Edit &e, juce::AudioDeviceManager &dm,
     app_services::MidiCommandManager &mcm)
-    : edit(e), 
-      deviceManager(dm), midiCommandManager(mcm),
+    : edit(e), deviceManager(dm), midiCommandManager(mcm),     
+      editTabBarView(e, mcm), 
       viewModel(e, deviceManager, ConfigurationHelpers::getApplicationName()),
       titledList(viewModel.getItemNames(), "Song list",
                  ListTitle::IconType::FONT_AWESOME,
@@ -55,16 +55,23 @@ void LoadSaveSongListView::encoder1Decreased() {
 void LoadSaveSongListView::encoder1ButtonReleased() {
     if (isShowing()) {
         const auto index = viewModel.itemListState.getSelectedItemIndex();
-        if (index == 0) { //Save
+        if (index == 0) { // Add
             const auto i = index;
-            const auto track_name = ConfigurationHelpers::getSavedTrackName();
+            const auto loadFile = ConfigurationHelpers::getSavedTrackName();
+            const auto loadFileName = loadFile.getFileName();
 
             auto userAppDataDirectory = juce::File::getSpecialLocation(
                 juce::File::userApplicationDataDirectory);
+
             juce::File savedDirectory =
                 userAppDataDirectory.getChildFile(JUCE_APPLICATION_NAME_STRING)
                     .getChildFile("saved");
 
+            juce::File loadprojectDirectory =
+                userAppDataDirectory.getChildFile(JUCE_APPLICATION_NAME_STRING)
+                    .getChildFile("load_project");
+
+            //mountname
             auto currentTime = juce::Time::getCurrentTime();
             auto day =
                 juce::String(currentTime.getDayOfMonth()).paddedLeft('0', 2);
@@ -80,23 +87,40 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
 
             juce::String newEditFileName = "edit_" + day + month + year +
                                            hours + minutes + seconds + ".xml";
-            auto editFile = savedDirectory.getChildFile(newEditFileName);
-
-            editFile.create();
-            /* tracktion::EditFileOperations fileOperations(edit);
-            fileOperations.saveAs(editFile, true);*/
-
-            int pos = newEditFileName.lastIndexOf(".xml");
-            if (pos != -1 && pos == newEditFileName.length() - 4) {
-                // Quitar la extensión ".xml"
-                newEditFileName = newEditFileName.substring(0, pos);
+            //
+            auto saveFile = savedDirectory.getChildFile(loadFileName);           
+            
+            if (saveFile.existsAsFile()) {
+                loadFile.copyFileTo(savedDirectory);
+            } else {
+                if (savedDirectory.createDirectory()) {
+                    if (loadFile.moveFileTo(saveFile)) {
+                        juce::Logger::writeToLog(
+                            "Track copied to: " +
+                            saveFile.getFullPathName());
+                    } else {
+                        juce::Logger::writeToLog(
+                            "Error copy to: " +
+                            saveFile.getFullPathName());
+                    }
+                } else {
+                    juce::Logger::writeToLog(
+                        "Error create folder: " +
+                        loadprojectDirectory.getFullPathName());
+                }
             }
+            auto editFile = loadprojectDirectory.getChildFile(newEditFileName); 
+            editFile.create();
 
-            juce::Logger::writeToLog("Complete! (" + newEditFileName + ")");
-            messageBox.setMessage("Complete! (" + newEditFileName + ")");
-            resized();
-            messageBox.setVisible(true);
-            //startTimer(1000);
+            
+            tracktion::Engine &engine = *tracktion::Engine::getEngines()[0];
+            std::unique_ptr<tracktion::Edit> loadedEdit =
+                tracktion::loadEditFromFile(engine, saveFile);
+
+            bool success = loadedEdit->engine.getTemporaryFileManager()
+                               .getTempDirectory()
+                               .deleteRecursively();
+
         } else { // Load
             juce::String projectName = viewModel.getItemNames()[index];
             juce::File projectDirectory =
@@ -110,101 +134,72 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
 
             if (projectFile.existsAsFile()) {
                 juce::Logger::writeToLog("Loading project: " + projectName);
-
-                // Almacenar el engine en una variable
-                tracktion::engine::Engine &engine =
-                    *tracktion::engine::Engine::getEngines()[0];
-
-                // Cargar el proyecto utilizando el engine
-                std::unique_ptr<tracktion::Edit> loadedEdit =
-                    tracktion::loadEditFromFile(engine, projectFile);
-
-                if (loadedEdit) {
-                    juce::Logger::writeToLog("Project loaded successfully.");
-
-                    // Asegurarse de que el contexto del transporte está
-                    // asignado
-                    loadedEdit->getTransport().ensureContextAllocated();
-                    loadedEdit->clickTrackEnabled.setValue(true, nullptr);
-                    loadedEdit->setCountInMode(
-                        tracktion::Edit::CountIn::oneBar);
-
-                    // Configurar el MidiCommandManager
-                    auto midiCmdManager =
-                        std::make_unique<app_services::MidiCommandManager>(
-                            engine);
-
-                    if (auto uiBehavior = dynamic_cast<ExtendedUIBehaviour *>(
-                            &engine.getUIBehaviour())) {
-                        uiBehavior->setEdit(loadedEdit.get());
-                        uiBehavior->setMidiCommandManager(midiCmdManager.get());
-                    }
-
-                    // Inicializar el dispositivo de audio
-                    auto &deviceManager =
-                        engine.getDeviceManager().deviceManager;
-                    deviceManager.getCurrentDeviceTypeObject()
-                        ->scanForDevices();
-                    auto result =
-                        deviceManager.initialiseWithDefaultDevices(0, 2);
-                    if (result != "") {
-                        juce::Logger::writeToLog(
-                            "Attempt to initialise default devices failed!");
-                    }
-
-                    // Configurar los plugins en las pistas principales
-                    for (auto track :
-                         tracktion::getTopLevelTracks(*loadedEdit)) {
-                        if (track->isMasterTrack()) {
-                            if (track->pluginList
-                                    .getPluginsOfType<
-                                        tracktion::VolumeAndPanPlugin>()
-                                    .getLast() == nullptr) {
-                                track->pluginList.addDefaultTrackPlugins(false);
-                            }
-                        }
-                    }
-
-                    // Actualizar la UI para mostrar el nuevo Edit
-                    /* if (auto parentComponent = findParentComponentOfClass<
-                            YourMainComponentClass>()) {
-                        parentComponent->setEdit(loadedEdit.get());
-                        parentComponent->repaint();
-                        parentComponent->resized();
-                    }*/
-
-                    // Llamar a initSamples con la referencia al engine
-                    ConfigurationHelpers::setSavedTrackName(projectFile);
-                    ConfigurationHelpers::initSamples(engine);
-                } else {
-                    juce::Logger::writeToLog("Failed to load project.");
-                }
+                loadTrackFromFile(projectFile);               
+                //mainWindow = nullptr; // (deletes our window)                
             } else {
                 juce::Logger::writeToLog("Project file does not exist: " +
                                          projectFile.getFullPathName());
             }
-        }
-
-        if (midiCommandManager.getFocusedComponent() == this) {
-            if (auto stackNavigationController = findParentComponentOfClass<
-                    app_navigation::StackNavigationController>()) {
-                stackNavigationController->popToRoot();
-                midiCommandManager.setFocusedComponent(
-                    stackNavigationController->getTopComponent());
-            }
-        }
-
-        // Obtener y mostrar el valor de text
-        /* if (midiCommandManager.getFocusedComponent() == this) {
-            if (auto stackNavigationController = findParentComponentOfClass<
-                    app_navigation::StackNavigationController>()) {
-                stackNavigationController->popToRoot();
-                midiCommandManager.setFocusedComponent(
-                    stackNavigationController->getTopComponent());
-            }
-        }*/
+        }         
     }
 }
+
+void LoadSaveSongListView::loadTrackFromFile(const juce::File &projectFile) {
+    if (projectFile.existsAsFile()) {
+        juce::Logger::writeToLog("Loading project: " +
+                                 projectFile.getFileName());
+
+        tracktion::Engine &engine = *tracktion::Engine::getEngines()[0];
+        std::unique_ptr<tracktion::Edit> loadedEdit =
+            tracktion::loadEditFromFile(engine, projectFile);
+
+        if (loadedEdit) {
+            auto userAppDataDirectory = juce::File::getSpecialLocation(
+                juce::File::userApplicationDataDirectory);
+
+            juce::File loadprojectDirectory =
+                userAppDataDirectory.getChildFile(JUCE_APPLICATION_NAME_STRING)
+                    .getChildFile("load_project");
+
+            if (loadprojectDirectory.exists() &&
+                loadprojectDirectory.isDirectory()) {
+                
+                juce::Array<juce::File> files;
+                loadprojectDirectory.findChildFiles(
+                    files, juce::File::findFilesAndDirectories, true);
+
+                for (const auto &file : files) {
+                    if (file.deleteRecursively()) {
+                        juce::Logger::writeToLog("Archivo eliminado: " +
+                                                 file.getFullPathName());
+                    } else {
+                        juce::Logger::writeToLog(
+                            "No se pudo eliminar el archivo: " +
+                            file.getFullPathName());
+                    }
+                } 
+            } else {
+                juce::Logger::writeToLog(
+                    "The directory does not exist or is not a directory.");
+            }   
+            
+            juce::String fileName = projectFile.getFileName();
+            juce::File destinationFile =
+                loadprojectDirectory.getChildFile(fileName);
+
+            if (!projectFile.copyFileTo(destinationFile)) {
+                juce::Logger::writeToLog("Error copy on load");
+            }
+            juce::Logger::writeToLog("Project loaded successfully.");
+        } else {
+            juce::Logger::writeToLog("Failed to load project.");
+        }
+    } else {
+        juce::Logger::writeToLog("Project file does not exist: " +
+                                 projectFile.getFullPathName());
+    }
+}
+
 void LoadSaveSongListView::selectedIndexChanged(int newIndex) {
     titledList.getListView().getListBox().selectRow(newIndex);
     sendLookAndFeelChange();

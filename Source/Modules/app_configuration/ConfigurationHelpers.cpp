@@ -2,7 +2,7 @@
 #include <yaml-cpp/yaml.h>
 #include "ConfigurationHelpers.h"
 
-juce::File ConfigurationHelpers::SAVED_TRACK_NAME; // Definición de la variable
+juce::File ConfigurationHelpers::SAVED_TRACK_NAME;
 
 void ConfigurationHelpers::setSavedTrackName(const juce::File &newValue) {
     SAVED_TRACK_NAME = newValue;

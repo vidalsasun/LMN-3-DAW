@@ -6,14 +6,17 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include "App.h"
 #include "ExtendedUIBehaviour.h"
-
 #include "AppLookAndFeel.h"
 
 class GuiAppApplication : public juce::JUCEApplication {
   public:
-    GuiAppApplication()
+    static GuiAppApplication &getInstance() {
+        return *dynamic_cast<GuiAppApplication *>(
+            JUCEApplication::getInstance());
+    }
+      GuiAppApplication()
         : splash(new juce::SplashScreen(
-              "Welcome to my app!",
+              "Welcome to my LMN-3!",
               juce::ImageFileFormat::loadFrom(
                   ImageData::tracktion_engine_powered_png,
                   ImageData::tracktion_engine_powered_pngSize),
@@ -47,7 +50,7 @@ class GuiAppApplication : public juce::JUCEApplication {
             juce::File::userApplicationDataDirectory);
         juce::File savedDirectory =
             userAppDataDirectory.getChildFile(getApplicationName())
-                .getChildFile("saved");
+                .getChildFile("load_project");
 
         if (!savedDirectory.exists()) {
             savedDirectory.createDirectory();
@@ -100,7 +103,7 @@ class GuiAppApplication : public juce::JUCEApplication {
             // Crear el archivo y la edición
             editFile.create();
             edit = tracktion::createEmptyEdit(engine, editFile);
-            edit->ensureNumberOfAudioTracks(8);
+            edit->ensureNumberOfAudioTracks(tracktion::getAudioTracks(*edit).size());
 
             for (auto track : tracktion::getAudioTracks(*edit))
                 track->setColour(appLookAndFeel.getRandomColour());
@@ -149,7 +152,6 @@ class GuiAppApplication : public juce::JUCEApplication {
                 "Attempt to initialise default devices failed!");
         }
     }
-
     void shutdown() override {
         // Add your application's shutdown code here..
 
@@ -165,6 +167,7 @@ class GuiAppApplication : public juce::JUCEApplication {
         juce::Logger::setCurrentLogger(nullptr);
         mainWindow = nullptr; // (deletes our window)
     }
+    
 
     void systemRequestedQuit() override {
         // This is called when the app is being asked to quit: you can ignore
@@ -172,7 +175,18 @@ class GuiAppApplication : public juce::JUCEApplication {
         // allow the app to close.
         quit();
     }
+    void restartApplication() {
+        // Obtiene el nombre del ejecutable actual
+        juce::File currentExecutable(
+            juce::File::getSpecialLocation(juce::File::currentExecutableFile));
 
+        // Inicia un nuevo proceso de la aplicación
+        juce::ChildProcess process;
+        process.start(currentExecutable.getFullPathName());
+
+        // Cierra la aplicación actual
+        quit();
+    }
     void anotherInstanceStarted(const juce::String &commandLine) override {
         // When another instance of the app is launched while this one is
         // running, this method is invoked, and the commandLine parameter tells
