@@ -38,7 +38,7 @@ void LoadSaveSongListViewModel::selectedIndexChanged(int newIndex) {
 
 void LoadSaveSongListViewModel::loadSongList(const juce::File &directory) {
     songNames.clear();
-    songNames.add("Add +");   
+    songNames.add("Add");   
 
     juce::Array<juce::File> songFiles =
         directory.findChildFiles(juce::File::findFiles, false, "*.xml");

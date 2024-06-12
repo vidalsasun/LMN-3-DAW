@@ -9,7 +9,7 @@ LoadSaveSongListView::LoadSaveSongListView(
     : edit(e), deviceManager(dm), midiCommandManager(mcm),     
       editTabBarView(e, mcm), 
       viewModel(e, deviceManager, ConfigurationHelpers::getApplicationName()),
-      titledList(viewModel.getItemNames(), "Song list",
+      titledList(viewModel.getItemNames(), "Track list",
                  ListTitle::IconType::FONT_AWESOME,
                  juce::String::charToString(0xf7d9)) {
     viewModel.itemListState.addListener(this);
@@ -126,9 +126,9 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
             std::unique_ptr<tracktion::Edit> loadedEdit =
                 tracktion::loadEditFromFile(engine, saveFile);
 
-            bool success = loadedEdit->engine.getTemporaryFileManager()
+            /* bool success = loadedEdit->engine.getTemporaryFileManager()
                                .getTempDirectory()
-                               .deleteRecursively();
+                               .deleteRecursively();*/
 
 
             restartApplication();          

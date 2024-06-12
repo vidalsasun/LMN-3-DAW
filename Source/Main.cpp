@@ -155,7 +155,7 @@ class GuiAppApplication : public juce::JUCEApplication {
     void shutdown() override {
         // Add your application's shutdown code here..
 
-        bool success = edit->engine.getTemporaryFileManager()
+        /* bool success = edit->engine.getTemporaryFileManager()
                            .getTempDirectory()
                            .deleteRecursively();
         if (!success) {
@@ -163,7 +163,7 @@ class GuiAppApplication : public juce::JUCEApplication {
                                      edit->engine.getTemporaryFileManager()
                                          .getTempDirectory()
                                          .getFullPathName());
-        }
+        }*/
         juce::Logger::setCurrentLogger(nullptr);
         mainWindow = nullptr; // (deletes our window)
     }
