@@ -57,7 +57,9 @@ I am not a C++ programmer, I have tried to use the project methodology, but I am
 
   -  Unzip it
     
-    $ unzip LMN-3-aarch64-linux-gnu.zip, the result file is LMN-3 (IMPORTANT! if you dont backup the original file, it will be replaced)
+    $ unzip LMN-3-aarch64-linux-gnu.zip
+    
+    the result file is LMN-3 (IMPORTANT! if you dont backup the original file, it will be replaced)
     
   -  Done!
 
