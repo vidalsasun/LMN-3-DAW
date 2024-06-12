@@ -167,11 +167,18 @@ void LoadSaveSongListView::restartApplication() {
         juce::File::getSpecialLocation(juce::File::currentExecutableFile)
             .getFullPathName();
 
+    // Cierra la aplicación actual
+    //juce::JUCEApplication::getInstance()->systemRequestedQuit();
+    juce::JUCEApplication::getInstance()->quit();
+    // Espera 500 milisegundos antes de iniciar la nueva instancia
+    juce::Thread::sleep(500);
+
     // Inicia un nuevo proceso de la aplicación
     juce::ChildProcess process;
     if (process.start(appPath)) {
-        // Cierra la aplicación actual
-        juce::JUCEApplication::getInstance()->quit();
+        // La aplicación actual ya está cerrada automáticamente al llamar a
+        // systemRequestedQuit(), así que no es necesario llamar a quit()
+        // nuevamente aquí.
     } else {
         juce::Logger::writeToLog("Error al intentar reiniciar la aplicación.");
     }
