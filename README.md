@@ -51,7 +51,7 @@ When this version of the program loads for the first time, it opens an empty pro
 
 #Install
   
-  -  Download latest release (actual tested release is v0.2.3) zip.
+  -  Download latest release (actual tested release is v0.2.4) zip.
   -  Go to /home/pi/ folder
   -  Rename LMN-3 file to backup it (IMPORTANT!)
   -  Copy zip file to /home/pi/ folder
