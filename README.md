@@ -7,7 +7,7 @@ https://github.com/FundamentalFrequency
 
 I am not a C++ programmer, I have tried to use the project methodology, but I am sure there is code I have added that could be greatly improved.
 
-When this version of the program loads for the first time, it opens an empty project. If you want to retrieve your project from LMN-3, copy the 'edit' file from /home/pi/.config/LMN-3 to the 'saved' folder, rename it as you like, and give it the .xml extension
+When this version of the program loads for the first time, it opens an empty project. If you want to retrieve your project from LMN-3, copy the 'edit' file from /home/pi/.config/LMN-3 to the 'saved' folder, rename it as you like, and give it the .xml extension, you will see when open the load/save menu
 
 #Changelog
 
@@ -61,9 +61,7 @@ When this version of the program loads for the first time, it opens an empty pro
     
     $ unzip LMN-3-aarch64-linux-gnu.zip
     
-    the result file is LMN-3 (IMPORTANT! if you dont backup the original file, it will be replaced)
-
-    When you load this fork program first time, an empty project will be created. If you want to
+    the result file is LMN-3 (IMPORTANT! if you dont backup the original file, it will be replaced)   
     
   -  Done!
 
