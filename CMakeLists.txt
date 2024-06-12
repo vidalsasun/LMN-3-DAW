@@ -192,7 +192,7 @@ target_link_libraries(LMN-3
         FontData
     #    SynthSampleData
     #    DrumSampleData
-    #   atomic
+       atomic
         yaml-cpp
     PUBLIC
         juce::juce_recommended_config_flags
