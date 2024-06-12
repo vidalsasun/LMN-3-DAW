@@ -109,6 +109,15 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
                         loadprojectDirectory.getFullPathName());
                 }
             }
+
+            if (loadprojectDirectory.exists()) {
+                auto files = loadprojectDirectory.findChildFiles(
+                    juce::File::findFiles, false);
+                for (auto &file : files) {
+                    file.deleteFile();
+                }
+            }
+
             auto editFile = loadprojectDirectory.getChildFile(newEditFileName); 
             editFile.create();
 
@@ -120,6 +129,10 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
             bool success = loadedEdit->engine.getTemporaryFileManager()
                                .getTempDirectory()
                                .deleteRecursively();
+
+
+            restartApplication();          
+
 
         } else { // Load
             juce::String projectName = viewModel.getItemNames()[index];
@@ -140,10 +153,29 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
                 juce::Logger::writeToLog("Project file does not exist: " +
                                          projectFile.getFullPathName());
             }
+            restartApplication();
+            
         }         
     }
 }
+void LoadSaveSongListView::restartApplication() {
+    // Guarda el estado actual si es necesario
+    // saveApplicationState();
 
+    // Obtén el nombre del ejecutable de la aplicación
+    juce::String appPath =
+        juce::File::getSpecialLocation(juce::File::currentExecutableFile)
+            .getFullPathName();
+
+    // Inicia un nuevo proceso de la aplicación
+    juce::ChildProcess process;
+    if (process.start(appPath)) {
+        // Cierra la aplicación actual
+        juce::JUCEApplication::getInstance()->quit();
+    } else {
+        juce::Logger::writeToLog("Error al intentar reiniciar la aplicación.");
+    }
+}
 void LoadSaveSongListView::loadTrackFromFile(const juce::File &projectFile) {
     if (projectFile.existsAsFile()) {
         juce::Logger::writeToLog("Loading project: " +

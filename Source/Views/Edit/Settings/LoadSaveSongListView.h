@@ -21,7 +21,7 @@ class LoadSaveSongListView : public juce::Component,
     void encoder1Increased() override;
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
-
+    void restartApplication();
     void selectedIndexChanged(int newIndex) override;
 
     void loadTrackFromFile(const juce::File &projectFile);

@@ -138,10 +138,34 @@ void EditTabBarView::saveButtonReleased() {
     
     //editFile.create();
     tracktion::EditFileOperations fileOperations(edit);
-    
+    auto userAppDataDirectory = juce::File::getSpecialLocation(
+        juce::File::userApplicationDataDirectory);
+
+    juce::File savedDirectory =
+        userAppDataDirectory.getChildFile(JUCE_APPLICATION_NAME_STRING)
+            .getChildFile("saved");
+
+
+     if (!savedDirectory.exists()) {
+        if (!savedDirectory.createDirectory()) {
+            juce::Logger::writeToLog("Error creating folder: " +
+                                     savedDirectory.getFullPathName());
+            return;
+        }
+    }
+
      if (track_name.exists()) {
         fileOperations.saveAs(track_name, true);
     }    
+    auto saveFile = savedDirectory.getChildFile(track_name.getFileName());      
+    
+    if (track_name.copyFileTo(saveFile)) {
+        juce::Logger::writeToLog("Track copied to: " +
+                                 saveFile.getFullPathName());
+    } else {
+        juce::Logger::writeToLog("Error copying to: " +
+                                 saveFile.getFullPathName());
+    }
 
     juce::Logger::writeToLog("Complete! (" + track_name.getFileNameWithoutExtension() + ")");
     messageBox.setMessage("Complete! (" + track_name.getFileNameWithoutExtension() + ")");
