@@ -9,6 +9,11 @@ https://github.com/FundamentalFrequency
 
   -  Added Load / Save tracks.
 
+    ![image](https://github.com/vidalsasun/LMN-3-DAW/assets/23163594/7eabe772-995c-4199-ae2f-b5999457683c)
+    ![image](https://github.com/vidalsasun/LMN-3-DAW/assets/23163594/0fc9b7a4-0d95-4af8-9a11-ab6e3a8f3648)
+
+
+
   -  Remove metronome on play (not on record)
 
 
