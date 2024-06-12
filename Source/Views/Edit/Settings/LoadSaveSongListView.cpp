@@ -9,7 +9,7 @@ LoadSaveSongListView::LoadSaveSongListView(
     : edit(e), deviceManager(dm), midiCommandManager(mcm),     
       editTabBarView(e, mcm), 
       viewModel(e, deviceManager, ConfigurationHelpers::getApplicationName()),
-      titledList(viewModel.getItemNames(), "Track list",
+      titledList(viewModel.getItemNames(), "Song list",
                  ListTitle::IconType::FONT_AWESOME,
                  juce::String::charToString(0xf7d9)) {
     viewModel.itemListState.addListener(this);
@@ -126,9 +126,9 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
             std::unique_ptr<tracktion::Edit> loadedEdit =
                 tracktion::loadEditFromFile(engine, saveFile);
 
-            /* bool success = loadedEdit->engine.getTemporaryFileManager()
+            bool success = loadedEdit->engine.getTemporaryFileManager()
                                .getTempDirectory()
-                               .deleteRecursively();*/
+                               .deleteRecursively();
 
 
             restartApplication();          
@@ -167,18 +167,11 @@ void LoadSaveSongListView::restartApplication() {
         juce::File::getSpecialLocation(juce::File::currentExecutableFile)
             .getFullPathName();
 
-    // Cierra la aplicación actual
-    //juce::JUCEApplication::getInstance()->systemRequestedQuit();
-    juce::JUCEApplication::getInstance()->quit();
-    // Espera 500 milisegundos antes de iniciar la nueva instancia
-    juce::Thread::sleep(500);
-
     // Inicia un nuevo proceso de la aplicación
     juce::ChildProcess process;
     if (process.start(appPath)) {
-        // La aplicación actual ya está cerrada automáticamente al llamar a
-        // systemRequestedQuit(), así que no es necesario llamar a quit()
-        // nuevamente aquí.
+        // Cierra la aplicación actual
+        juce::JUCEApplication::getInstance()->quit();
     } else {
         juce::Logger::writeToLog("Error al intentar reiniciar la aplicación.");
     }
