@@ -36,16 +36,31 @@ I am not a C++ programmer, I have tried to use the project methodology, but I am
         -  Temporary folder is removed (the program will create another on load)
         -  Load_project folder is cleaned 
         -  A new file is created on Load_project folder and the actual project xml file are moved to saved folder, if there are a file whith the same name, it is overwriten
+        -  LMN-3 program restart
       When you load a track:
         -  Temporary folder is removed (the program will create another on load)
         -  Load_project folder is cleaned and the track selected is moved to load_project folder
-      
+        -  LMN-3 program restart    
 
   
   -  Remove metronome on play (not on record)
+  
+    IMPORTANT: You cannot move the saved xml to another LMN-3 because need the same samples and drumkits, if you have the same folders on the other LMN-3, the track will load ok.
+
+#Install
+  
+  -  Download latest release (actual tested release is v0.2.3) zip.
+  -  Go to /home/pi/ folder
+  -  Rename LMN-3 file to backup it (IMPORTANT!)
+  -  Copy zip file to /home/pi/ folder
+  ![alt text](https://github.com/vidalsasun/LMN-3-DAW/assets/23163594/4c27929b-c196-46a3-ae09-c2ff6dccd2da)
+
+  -  Unzip it
+    $ unzip LMN-3-aarch64-linux-gnu.zip, the result file is LMN-3 (IMPORTANT! if you dont backup the original file, it will be replaced)
+  -  Done!
 
 
 
-    IMPORTANT: You cannot move the saved xml to another LMN-3 because need the same samples and drumkits, if you hace the same folders on the other LMN-3, the track will load ok.
+
 
 
