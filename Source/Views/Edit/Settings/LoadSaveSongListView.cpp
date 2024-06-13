@@ -159,9 +159,7 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
     }
 }
 void LoadSaveSongListView::restartApplication() {
-    // Cerrar la aplicación actual de manera controlada
-    juce::JUCEApplication::getInstance()->quit();
-
+    juce::Logger::writeToLog("Wait 1 second.");
     // Esperar un breve momento para que la aplicación actual termine
     juce::Time::waitForMillisecondCounter(juce::Time::getMillisecondCounter() +
                                           1000); // Espera 1 segundo
@@ -170,12 +168,17 @@ void LoadSaveSongListView::restartApplication() {
     juce::String appPath =
         juce::File::getSpecialLocation(juce::File::currentExecutableFile)
             .getFullPathName();
+    
+    juce::Logger::writeToLog("appPath" + appPath);
 
     // Iniciar un nuevo proceso de la aplicación
     juce::ChildProcess process;
     if (process.start(appPath)) {
+        juce::Logger::writeToLog("Started Ok" + appPath);
         // Éxito al iniciar el nuevo proceso, salida del programa actual
         juce::JUCEApplication::getInstance()->quit();
+        juce::Logger::writeToLog("Quit Ok" + appPath);
+
     } else {
         // Manejar error si no se puede iniciar el nuevo proceso
         juce::Logger::writeToLog("Error al intentar reiniciar la aplicación.");
