@@ -126,9 +126,9 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
             std::unique_ptr<tracktion::Edit> loadedEdit =
                 tracktion::loadEditFromFile(engine, saveFile);
 
-            bool success = loadedEdit->engine.getTemporaryFileManager()
+            /* bool success = loadedEdit->engine.getTemporaryFileManager()
                                .getTempDirectory()
-                               .deleteRecursively();
+                               .deleteRecursively();*/
 
 
             restartApplication();          
