@@ -161,15 +161,29 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
 void LoadSaveSongListView::restartApplication() {
     // Guarda el estado actual si es necesario
     // saveApplicationState();
+    juce::Logger::writeToLog("Attempting to restart application...");
 
     // Obtén el nombre del ejecutable de la aplicación
     juce::String appPath =
         juce::File::getSpecialLocation(juce::File::currentExecutableFile)
             .getFullPathName();
+    juce::Logger::writeToLog("Executable path: " + appPath);
+
+    // Ruta del archivo de log
+    juce::File logFile =
+        juce::File::getSpecialLocation(juce::File::userDesktopDirectory)
+            .getChildFile("app_restart.log");
+
+    // Comando para iniciar la aplicación con redirección de salida
+    juce::String command =
+        appPath + " > " + logFile.getFullPathName() + " 2>&1";
+    juce::Logger::writeToLog("Command to run: " + command);
 
     // Inicia un nuevo proceso de la aplicación
     juce::ChildProcess process;
-    if (process.start(appPath)) {
+    if (process.start(command)) {
+        juce::Logger::writeToLog(
+            "Process started successfully. Quitting application...");
         // Cierra la aplicación actual
         juce::JUCEApplication::getInstance()->quit();
     } else {
