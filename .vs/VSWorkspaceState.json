@@ -10,7 +10,6 @@
       "out\\install\\x64-Debug"
     ]
   },
-  "ActiveTargetSystem": "M\u00E1quina local",
   "ExpandedNodes": [
     "",
     "\\Source",
@@ -23,5 +22,6 @@
     "\\Source\\Views\\Edit\\Tracks"
   ],
   "SelectedNode": "\\CMakeLists.txt",
-  "PreviewInSolutionExplorer": false
+  "PreviewInSolutionExplorer": false,
+  "ActiveTargetSystem": "M\u00E1quina local"
 }

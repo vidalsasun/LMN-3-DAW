@@ -2,6 +2,7 @@
 #include <ExtendedUIBehaviour.h>
 #include <app_navigation/app_navigation.h>
 #include <tracktion_engine/tracktion_engine.h>
+#include <fstream>
 
 LoadSaveSongListView::LoadSaveSongListView(
     tracktion::Edit &e, juce::AudioDeviceManager &dm,
@@ -159,36 +160,55 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
     }
 }
 void LoadSaveSongListView::restartApplication() {
-    // Guarda el estado actual si es necesario
-    // saveApplicationState();
-    juce::Logger::writeToLog("Attempting to restart application...");
-
     // Obtén el nombre del ejecutable de la aplicación
     juce::String appPath =
         juce::File::getSpecialLocation(juce::File::currentExecutableFile)
             .getFullPathName();
-    juce::Logger::writeToLog("Executable path: " + appPath);
 
-    // Ruta del archivo de log
-    juce::File logFile =
-        juce::File::getSpecialLocation(juce::File::userDesktopDirectory)
-            .getChildFile("app_restart.log");
-
-    // Comando para iniciar la aplicación con redirección de salida
-    juce::String command =
-        appPath + " > " + logFile.getFullPathName() + " 2>&1";
-    juce::Logger::writeToLog("Command to run: " + command);
+// Detecta el sistema operativo
+#if JUCE_WINDOWS
+    juce::Logger::writeToLog("Windows Reload.");
+    // En Windows, usamos un script por lotes (batch script)
+    juce::String appPath =
+        juce::File::getSpecialLocation(juce::File::currentExecutableFile)
+            .getFullPathName();
 
     // Inicia un nuevo proceso de la aplicación
     juce::ChildProcess process;
-    if (process.start(command)) {
-        juce::Logger::writeToLog(
-            "Process started successfully. Quitting application...");
+    if (process.start(appPath)) {
         // Cierra la aplicación actual
         juce::JUCEApplication::getInstance()->quit();
     } else {
         juce::Logger::writeToLog("Error al intentar reiniciar la aplicación.");
     }
+#else
+    // En Unix-like systems, usamos un script de shell
+    juce::Logger::writeToLog("Linux Reload.");
+    juce::File scriptFile = juce::File("/home/pi/LMN_start.sh");
+
+    // Verifica que el script exista
+    if (!scriptFile.existsAsFile()) {
+        juce::Logger::writeToLog("LMN_start.sh script not found at: " +
+                                 scriptFile.getFullPathName());
+        return;
+    }
+
+    // Haz que el script sea ejecutable
+    if (!scriptFile.setExecutable(true)) {
+        juce::Logger::writeToLog("Error making script executable: " +
+                                 scriptFile.getFullPathName());
+        return;
+    }
+
+    // Inicia el script
+    juce::ChildProcess process;
+    if (process.start("sh " + scriptFile.getFullPathName())) {
+        // Cierra la aplicación actual
+        juce::JUCEApplication::getInstance()->quit();
+    } else {
+        juce::Logger::writeToLog("Error al intentar reiniciar la aplicación.");
+    }
+#endif
 }
 void LoadSaveSongListView::loadTrackFromFile(const juce::File &projectFile) {
     if (projectFile.existsAsFile()) {
