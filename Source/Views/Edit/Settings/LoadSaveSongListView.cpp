@@ -170,15 +170,15 @@ void LoadSaveSongListView::restartApplication() {
             .getFullPathName();
     
     juce::Logger::writeToLog("appPath" + appPath);
-
-    // Iniciar un nuevo proceso de la aplicación
+    
+    juce::JUCEApplication::getInstance()->quit();
+    juce::Logger::writeToLog("Quit Ok" + appPath);
+    
     juce::ChildProcess process;
+    
     if (process.start(appPath)) {
         juce::Logger::writeToLog("Started Ok" + appPath);
-        // Éxito al iniciar el nuevo proceso, salida del programa actual
         //juce::JUCEApplication::getInstance()->quit();
-        juce::Logger::writeToLog("Quit Ok" + appPath);
-
     } else {
         // Manejar error si no se puede iniciar el nuevo proceso
         juce::Logger::writeToLog("Error al intentar reiniciar la aplicación.");
