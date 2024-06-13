@@ -168,32 +168,32 @@ void LoadSaveSongListView::restartApplication() {
     juce::String appPath =
         juce::File::getSpecialLocation(juce::File::currentExecutableFile)
             .getFullPathName();
-    
-    juce::Logger::writeToLog("appPath" + appPath);
-    juce::JUCEApplication::getInstance()->quit();
 
-    
+    juce::Logger::writeToLog("appPath: " + appPath);
+
 #if JUCE_MAC || JUCE_LINUX
-    juce::Logger::writeToLog("Linux restart" + appPath);
+    juce::Logger::writeToLog("Linux restart: " + appPath);
     juce::String scriptPath = "/home/pi/LMN_start.sh";
     juce::ChildProcess process;
     if (process.start("sh " + scriptPath)) {
-        juce::Logger::writeToLog("Excute LMN_start.sh ok" + appPath);        
+        juce::Logger::writeToLog("Executed LMN_start.sh successfully.");
     } else {
         juce::Logger::writeToLog("Error starting LMN_start.sh.");
     }
 #else
-    juce::Logger::writeToLog("Windows restart" + appPath);
-
+    juce::Logger::writeToLog("Windows restart: " + appPath);
     juce::ChildProcess process;
-
     if (process.start(appPath)) {
-        juce::Logger::writeToLog("Application restarted ok" + appPath);        
+        juce::Logger::writeToLog("Application restarted successfully.");
     } else {
-        // Manejar error si no se puede iniciar el nuevo proceso
-        juce::Logger::writeToLog("Error al intentar reiniciar la aplicación.");
+        juce::Logger::writeToLog(
+            "Error attempting to restart the application.");
     }
-#endif    
+#endif
+
+    // Cierra la aplicación actual después de un breve retraso
+    juce::Timer::callAfterDelay(
+        100, [] { juce::JUCEApplication::getInstance()->quit(); });
 }
 void LoadSaveSongListView::loadTrackFromFile(const juce::File &projectFile) {
     if (projectFile.existsAsFile()) {
