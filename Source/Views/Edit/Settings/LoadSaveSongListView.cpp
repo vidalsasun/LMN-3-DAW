@@ -176,7 +176,7 @@ void LoadSaveSongListView::restartApplication() {
     if (process.start(appPath)) {
         juce::Logger::writeToLog("Started Ok" + appPath);
         // Éxito al iniciar el nuevo proceso, salida del programa actual
-        juce::JUCEApplication::getInstance()->quit();
+        //juce::JUCEApplication::getInstance()->quit();
         juce::Logger::writeToLog("Quit Ok" + appPath);
 
     } else {
