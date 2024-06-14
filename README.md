@@ -59,6 +59,7 @@ the process of load/save takes 5 seconds.
 #Install
   
   -  Download latest release (actual tested release is v0.1.0) zip.
+  -  Connect with the LMN-3 raspberry, im on windows and use WinSCP. 
   -  Go to /home/pi/ folder
   -  Rename LMN-3 file to backup it (IMPORTANT!)
   -  Copy zip file to /home/pi/ folder
