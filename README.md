@@ -51,7 +51,7 @@ the process of load/save takes 5 seconds.
 
 #Install
   
-  -  Download latest release (actual tested release is v0.3.9) zip.
+  -  Download latest release (actual tested release is v0.1.0) zip.
   -  Go to /home/pi/ folder
   -  Rename LMN-3 file to backup it (IMPORTANT!)
   -  Copy zip file to /home/pi/ folder
