@@ -37,12 +37,10 @@ the process of load/save takes 5 seconds.
       When you press the save button:
         -  the load_project xml file is moved to saved folder, if there are a file whith the same name, it is overwriten
       When you Add a new track: 
-        -  Temporary folder is removed (the program will create another on load)
         -  Load_project folder is cleaned 
         -  A new file is created on Load_project folder and the actual project xml file are moved to saved folder, if there are a file whith the same name, it is overwriten
         -  LMN-3 program restart
       When you load a track:
-        -  Temporary folder is removed (the program will create another on load)
         -  Load_project folder is cleaned and the track selected is moved to load_project folder
         -  LMN-3 program restart    
 
