@@ -154,7 +154,7 @@ class GuiAppApplication : public juce::JUCEApplication {
     }
     void shutdown() override {
         // Add your application's shutdown code here..
-
+        juce::Logger::writeToLog("Shutdown call");
         bool success = edit->engine.getTemporaryFileManager()
                            .getTempDirectory()
                            .deleteRecursively();
@@ -164,8 +164,16 @@ class GuiAppApplication : public juce::JUCEApplication {
                                          .getTempDirectory()
                                          .getFullPathName());
         }
+        juce::Logger::writeToLog("init nullptr");
+
         juce::Logger::setCurrentLogger(nullptr);
         mainWindow = nullptr; // (deletes our window)
+
+        juce::Logger::writeToLog("end nullptr");
+
+        restartApplication();
+
+        juce::Logger::writeToLog("Restarted ok");
     }
     
 
@@ -176,16 +184,12 @@ class GuiAppApplication : public juce::JUCEApplication {
         quit();
     }
     void restartApplication() {
-        // Obtiene el nombre del ejecutable actual
         juce::File currentExecutable(
             juce::File::getSpecialLocation(juce::File::currentExecutableFile));
 
-        // Inicia un nuevo proceso de la aplicación
         juce::ChildProcess process;
         process.start(currentExecutable.getFullPathName());
-
-        // Cierra la aplicación actual
-        quit();
+        //quit();
     }
     void anotherInstanceStarted(const juce::String &commandLine) override {
         // When another instance of the app is launched while this one is
