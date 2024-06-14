@@ -46,6 +46,33 @@ class GuiAppApplication : public juce::JUCEApplication {
         engine.getPluginManager()
             .createBuiltInType<internal_plugins::DrumSamplerPlugin>();
 
+
+
+        // this can cache all your plugins.
+        /* auto &knownPluginList = engine.getPluginManager().knownPluginList;
+
+        // the plugin needs to be exists
+        juce::File pluginFile("~/.vst3/TAL-NoiseMaker/TAL-NoiseMaker.vst3");
+
+        // these will be filled by the next function, so we get the
+        // pluginDescription
+        static juce::OwnedArray<juce::PluginDescription> pluginDescriptions;
+        static juce::VST3PluginFormat vst3PluginFormat;
+
+        // now you can add your plugin to the knownPluginList
+        knownPluginList.scanAndAddFile(
+            juce::String(pluginFile.getFullPathName()), true,
+            pluginDescriptions, vst3PluginFormat);
+
+        // get the plugin
+        auto plug = edit->getPluginCache().createNewPlugin(
+            tracktion::ExternalPlugin::xmlTypeName,
+            *pluginDescriptions.getLast());
+            */
+        
+
+
+
         auto userAppDataDirectory = juce::File::getSpecialLocation(
             juce::File::userApplicationDataDirectory);
         juce::File savedDirectory =
@@ -155,7 +182,7 @@ class GuiAppApplication : public juce::JUCEApplication {
     void shutdown() override {
         // Add your application's shutdown code here..
         juce::Logger::writeToLog("Shutdown call");
-        bool success = edit->engine.getTemporaryFileManager()
+        /* bool success = edit->engine.getTemporaryFileManager()
                            .getTempDirectory()
                            .deleteRecursively();
         if (!success) {
@@ -163,7 +190,7 @@ class GuiAppApplication : public juce::JUCEApplication {
                                      edit->engine.getTemporaryFileManager()
                                          .getTempDirectory()
                                          .getFullPathName());
-        }
+        }*/
         juce::Logger::writeToLog("init nullptr");
 
         juce::Logger::setCurrentLogger(nullptr);

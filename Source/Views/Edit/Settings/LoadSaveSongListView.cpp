@@ -159,20 +159,20 @@ void LoadSaveSongListView::encoder1ButtonReleased() {
     }
 }
 void LoadSaveSongListView::restartApplication() {
-    // Guarda el estado actual si es necesario
-    // saveApplicationState();
-
-    // Obtén el nombre del ejecutable de la aplicación
+  
     juce::String appPath =
         juce::File::getSpecialLocation(juce::File::currentExecutableFile)
             .getFullPathName();
 
-    // Inicia un nuevo proceso de la aplicación
+   
     juce::ChildProcess process;
     if (process.start(appPath)) {
-        // Cierra la aplicación actual
+     
         juce::Time::waitForMillisecondCounter(juce::Time::getMillisecondCounter() + 5000);
         juce::JUCEApplication::getInstance()->quit();
+
+
+       
     } else {
         juce::Logger::writeToLog("Error al intentar reiniciar la aplicación.");
     }
