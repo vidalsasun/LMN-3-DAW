@@ -44,6 +44,13 @@ the process of load/save takes 5 seconds.
         -  Load_project folder is cleaned and the track selected is moved to load_project folder
         -  LMN-3 program restart    
 
+
+  When you save song, you can see the actual project name: 
+
+  ![alt text](https://github.com/vidalsasun/LMN-3-DAW/assets/23163594/2ad3a2b6-f615-4a18-816f-8fef433476d2)
+
+
+
   
   -  Remove metronome on play (not on record)
   
