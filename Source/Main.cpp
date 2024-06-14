@@ -171,9 +171,9 @@ class GuiAppApplication : public juce::JUCEApplication {
 
         juce::Logger::writeToLog("end nullptr");
 
-        restartApplication();
+        //restartApplication();
 
-        juce::Logger::writeToLog("Restarted ok");
+        //juce::Logger::writeToLog("Restarted ok");
     }
     
 
