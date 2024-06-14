@@ -9,6 +9,8 @@ I am not a C++ programmer, I have tried to use the project methodology, but I am
 
 When this version of the program loads for the first time, it opens an empty project. If you want to retrieve your project from LMN-3, copy the 'edit' file from /home/pi/.config/LMN-3 to the 'saved' folder, rename it as you like, and give it the .xml extension, you will see when open the load/save menu
 
+the process of load/save takes 5 seconds.
+
 #Changelog
 
   -  Added Load / Save tracks.
@@ -16,7 +18,7 @@ When this version of the program loads for the first time, it opens an empty pro
    ![alt text](https://github.com/vidalsasun/LMN-3-DAW/assets/23163594/7eabe772-995c-4199-ae2f-b5999457683c)
    ![alt text](https://github.com/vidalsasun/LMN-3-DAW/assets/23163594/0fc9b7a4-0d95-4af8-9a11-ab6e3a8f3648)
 
-    Since we do not have an alphabetical keyboard, I have decided to name the tracks with the format 'edit_+ddmmyyyyhhMMss'. If you change the name of the file after there are no problem.
+    Since we do not have an alphabetical keyboard, I have decided to name the tracks with the format 'edit_+ddmmyyyyhhMMss'. 
     
     If you decide to change the file name later, it will load without any problem.
 
