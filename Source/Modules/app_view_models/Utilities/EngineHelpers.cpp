@@ -10,7 +10,17 @@ bool EngineHelpers::isTrackArmed(tracktion::AudioTrack &t, int position) {
 
     return false;
 }
+void generateSyncPulse(juce::AudioBuffer<float> &buffer, double sampleRate,
+                       double bpm) {
+    const float pulseFrequency = bpm / 60.0; // Pulsos por segundo
+    const int numSamples = buffer.getNumSamples();
+    auto *channelData = buffer.getWritePointer(0);
 
+    for (int i = 0; i < numSamples; ++i) {
+        double phase = std::fmod(i * pulseFrequency / sampleRate, 1.0);
+        channelData[i] = (phase < 0.01) ? 1.0f : 0.0f; // Pulso corto
+    }
+}
 juce::Array<tracktion::Track *>
 EngineHelpers::getAudioAndMasterTracks(tracktion::Edit &e) {
     juce::Array<tracktion::Track *> tracks;

@@ -219,9 +219,9 @@ void TracksListViewModel::startPlaying() {
 
     if (!transport.isPlaying()) {
         transport.play(false);
+        //generateSyncPulse(audioBuffer, sampleRate, transport.getCurrentTempo());
     }
 }
-
 void TracksListViewModel::stopRecordingOrPlaying() {
     auto &transport = edit.getTransport();
     if (transport.isPlaying() || transport.isRecording()) {

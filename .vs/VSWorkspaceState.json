@@ -10,18 +10,18 @@
       "out\\install\\x64-Debug"
     ]
   },
+  "ActiveTargetSystem": "M\u00E1quina local",
   "ExpandedNodes": [
     "",
     "\\Source",
     "\\Source\\Modules",
+    "\\Source\\Modules\\app_configuration",
     "\\Source\\Modules\\app_services",
     "\\Source\\Modules\\app_services\\MidiCommandManager",
-    "\\Source\\Views",
-    "\\Source\\Views\\Edit",
-    "\\Source\\Views\\Edit\\Settings",
-    "\\Source\\Views\\Edit\\Tracks"
+    "\\Source\\Modules\\app_view_models",
+    "\\Source\\Modules\\app_view_models\\Edit",
+    "\\Source\\Modules\\app_view_models\\Edit\\Tracks",
+    "\\Source\\Views"
   ],
-  "SelectedNode": "\\CMakeLists.txt",
-  "PreviewInSolutionExplorer": false,
-  "ActiveTargetSystem": "M\u00E1quina local"
+  "PreviewInSolutionExplorer": false
 }
